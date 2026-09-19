@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { BarChart3, PlusCircle, LogOut, User, Sparkles } from 'lucide-react';
+import { BarChart3, PlusCircle, LogOut, Sparkles } from 'lucide-react';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -15,14 +15,14 @@ export const Navbar = () => {
   return (
     <header
       style={{
-        borderBottom: '1px solid #e2e8f0',
-        background: 'rgba(255, 255, 255, 0.92)',
+        borderBottom: '1px solid rgba(245, 197, 66, 0.2)',
+        background: 'rgba(7, 13, 30, 0.88)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)',
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(245, 197, 66, 0.12)',
       }}
     >
       <div
@@ -35,7 +35,7 @@ export const Navbar = () => {
           justifyContent: 'space-between',
         }}
       >
-        {/* Brand Logo with Ocean Teal Gradient */}
+        {/* Brand Logo with Regal Gold & Navy Icon */}
         <Link
           to={user ? '/dashboard' : '/login'}
           style={{
@@ -50,27 +50,27 @@ export const Navbar = () => {
               width: '40px',
               height: '40px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #2563eb 0%, #0284c7 50%, #0d9488 100%)',
+              background: 'linear-gradient(135deg, #f5c542 0%, #e5a93b 50%, #b47b18 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)',
+              boxShadow: '0 4px 16px rgba(245, 197, 66, 0.35)',
             }}
           >
-            <BarChart3 size={22} color="#ffffff" />
+            <BarChart3 size={22} color="#070d1e" />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span
               style={{
                 fontFamily: 'var(--font-display)',
                 fontWeight: 800,
                 fontSize: '1.35rem',
                 letterSpacing: '-0.03em',
-                color: '#0f172a',
+                color: '#f8fafc',
               }}
             >
-              Poll<span style={{ color: '#2563eb' }}>Pulse</span>
+              Poll<span style={{ color: '#f5c542' }}>Pulse</span>
             </span>
 
             <span
@@ -108,7 +108,7 @@ export const Navbar = () => {
                   alignItems: 'center',
                   gap: '0.75rem',
                   paddingLeft: '0.6rem',
-                  borderLeft: '1px solid #e2e8f0',
+                  borderLeft: '1px solid rgba(245, 197, 66, 0.2)',
                 }}
               >
                 <div
@@ -117,11 +117,11 @@ export const Navbar = () => {
                     alignItems: 'center',
                     gap: '0.55rem',
                     fontSize: '0.88rem',
-                    color: 'var(--text-muted)',
-                    background: '#f1f5f9',
+                    color: '#e2e8f0',
+                    background: 'rgba(18, 32, 68, 0.8)',
                     padding: '0.35rem 0.75rem',
                     borderRadius: 'var(--radius-full)',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid rgba(245, 197, 66, 0.25)',
                   }}
                 >
                   <div
@@ -129,18 +129,18 @@ export const Navbar = () => {
                       width: '24px',
                       height: '24px',
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #2563eb, #0284c7)',
+                      background: 'linear-gradient(135deg, #f5c542, #e5a93b)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: 'white',
+                      color: '#070d1e',
                       fontSize: '0.75rem',
-                      fontWeight: 700,
+                      fontWeight: 800,
                     }}
                   >
                     {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                   </div>
-                  <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{user.name}</span>
+                  <span style={{ fontWeight: 600, color: '#f8fafc' }}>{user.name}</span>
                 </div>
 
                 <button

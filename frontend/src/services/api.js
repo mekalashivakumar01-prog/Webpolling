@@ -1,10 +1,25 @@
 // Voter token utility for client deduplication fingerprint
+// Uses sessionStorage so each tab/browser window acts as an independent person/voter!
 export const getVoterToken = () => {
-  let token = localStorage.getItem('poll_voter_token');
+  let token = sessionStorage.getItem('poll_voter_token');
   if (!token) {
-    token = 'voter_' + Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
-    localStorage.setItem('poll_voter_token', token);
+    // Check if voter ID is passed in URL query or generate a unique random token
+    const urlParams = new URLSearchParams(window.location.search);
+    const customVoter = urlParams.get('voter');
+    if (customVoter) {
+      token = 'voter_' + customVoter;
+    } else {
+      token = 'voter_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+    }
+    sessionStorage.setItem('poll_voter_token', token);
   }
+  return token;
+};
+
+// Generates a new voter token to allow voting again as another person
+export const resetVoterToken = () => {
+  const token = 'voter_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+  sessionStorage.setItem('poll_voter_token', token);
   return token;
 };
 
@@ -60,13 +75,13 @@ export const api = {
   closePoll: (id) => request(`/api/polls/${id}/close`, { method: 'POST' }),
   deletePoll: (id) => request(`/api/polls/${id}`, { method: 'DELETE' }),
 
-  // Voting
-  castVote: (pollId, optionId) =>
+  // Voting with optional voter token override
+  castVote: (pollId, optionId, voterIdOverride = null) =>
     request(`/api/polls/${pollId}/vote`, {
       method: 'POST',
       body: JSON.stringify({
         option_id: optionId,
-        voter_id: getVoterToken(),
+        voter_id: voterIdOverride || getVoterToken(),
       }),
     }),
 };

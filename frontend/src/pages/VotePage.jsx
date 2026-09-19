@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { api, getVoterToken } from '../services/api';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { api, getVoterToken, resetVoterToken } from '../services/api';
 import { LiveResultsChart } from '../components/LiveResultsChart';
-import { CheckCircle2, Lock, AlertCircle, BarChart3, Share2, ArrowRight, Sparkles, Zap } from 'lucide-react';
+import { CheckCircle2, Lock, AlertCircle, BarChart3, Share2, ArrowRight, UserPlus, Users, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { showToast } from '../components/Toast';
 
 export const VotePage = () => {
   const { shareCode } = useParams();
+  const [searchParams] = useSearchParams();
   const [poll, setPoll] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,16 +16,24 @@ export const VotePage = () => {
   const [error, setError] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [updatedResults, setUpdatedResults] = useState(null);
+  const [currentVoterToken, setCurrentVoterToken] = useState(getVoterToken());
 
   useEffect(() => {
+    // If URL has ?new=1 or ?reset=1, reset the voter token for a brand-new voter session
+    if (searchParams.get('new') === '1' || searchParams.get('reset') === '1') {
+      const newToken = resetVoterToken();
+      setCurrentVoterToken(newToken);
+    }
+
     const fetchPoll = async () => {
       try {
         const data = await api.getPollByShareCode(shareCode);
         setPoll(data);
 
-        // Check if user already voted in this poll from this browser
-        const storedVotes = JSON.parse(localStorage.getItem('user_voted_polls') || '{}');
-        if (storedVotes[data.id]) {
+        // Check if this specific session/tab has voted in this poll
+        // (Uses sessionStorage so distinct browser tabs act as separate voters!)
+        const storedVotes = JSON.parse(sessionStorage.getItem('user_voted_polls') || '{}');
+        if (storedVotes[data.id] && searchParams.get('new') !== '1') {
           setHasVoted(true);
           setSelectedOption(storedVotes[data.id]);
           const results = await api.getPollResults(data.id);
@@ -38,7 +47,7 @@ export const VotePage = () => {
     };
 
     fetchPoll();
-  }, [shareCode]);
+  }, [shareCode, searchParams]);
 
   const handleVoteSubmit = async () => {
     if (!selectedOption) {
@@ -50,28 +59,28 @@ export const VotePage = () => {
     setError(null);
 
     try {
-      const res = await api.castVote(poll.id, selectedOption);
+      const res = await api.castVote(poll.id, selectedOption, currentVoterToken);
       setUpdatedResults(res.results);
       setHasVoted(true);
 
-      // Save to localStorage
-      const storedVotes = JSON.parse(localStorage.getItem('user_voted_polls') || '{}');
+      // Save to this tab's session
+      const storedVotes = JSON.parse(sessionStorage.getItem('user_voted_polls') || '{}');
       storedVotes[poll.id] = selectedOption;
-      localStorage.setItem('user_voted_polls', JSON.stringify(storedVotes));
+      sessionStorage.setItem('user_voted_polls', JSON.stringify(storedVotes));
 
-      // Fire vibrant multi-color confetti without violet!
+      // Fire vibrant royal gold & deep blue confetti!
       confetti({
         particleCount: 100,
         spread: 80,
         origin: { y: 0.65 },
-        colors: ['#2563eb', '#0284c7', '#059669', '#10b981', '#f59e0b', '#06b6d4'],
+        colors: ['#f5c542', '#ffd700', '#3b82f6', '#1d4ed8', '#ffffff', '#e5a93b'],
       });
 
       showToast('Vote cast successfully!');
     } catch (err) {
       if (err.status === 409 || (err.data && err.data.already_voted)) {
         setHasVoted(true);
-        showToast('You have already voted in this poll.', 'info');
+        showToast('This voter session has already voted. Click "Cast Another Vote" to vote as a new person.', 'info');
         try {
           const res = await api.getPollResults(poll.id);
           setUpdatedResults(res);
@@ -84,9 +93,26 @@ export const VotePage = () => {
     }
   };
 
+  const handleVoteAgain = () => {
+    // Generate a fresh, unique voter token for the next voter
+    const newToken = resetVoterToken();
+    setCurrentVoterToken(newToken);
+
+    // Clear the current poll's recorded vote for this tab session
+    const storedVotes = JSON.parse(sessionStorage.getItem('user_voted_polls') || '{}');
+    if (poll) {
+      delete storedVotes[poll.id];
+      sessionStorage.setItem('user_voted_polls', JSON.stringify(storedVotes));
+    }
+
+    setHasVoted(false);
+    setSelectedOption(null);
+    showToast('Ready for next voter! Please cast your vote.', 'success');
+  };
+
   const copyShareLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    showToast('Poll share link copied!');
+    navigator.clipboard.writeText(window.location.href.split('?')[0]);
+    showToast('Poll share link copied to clipboard!');
   };
 
   if (loading) {
@@ -103,7 +129,7 @@ export const VotePage = () => {
         }}
       >
         <div className="pulse-dot" style={{ color: 'var(--primary)', width: '16px', height: '16px' }} />
-        <span style={{ fontSize: '1.05rem', fontWeight: 600 }}>Loading live poll...</span>
+        <span style={{ fontSize: '1.05rem', fontWeight: 600, color: '#f8fafc' }}>Loading live poll...</span>
       </div>
     );
   }
@@ -117,19 +143,19 @@ export const VotePage = () => {
               width: '64px',
               height: '64px',
               borderRadius: '20px',
-              background: '#fff1f2',
-              border: '1px solid #fecdd3',
+              background: 'rgba(244, 63, 94, 0.15)',
+              border: '1px solid rgba(244, 63, 94, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#e11d48',
+              color: '#fb7185',
               margin: '0 auto 1.25rem',
             }}
           >
             <AlertCircle size={32} />
           </div>
 
-          <h2 style={{ fontSize: '1.65rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>
+          <h2 style={{ fontSize: '1.65rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#f8fafc' }}>
             Poll Not Found
           </h2>
           <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', fontSize: '0.98rem' }}>
@@ -154,10 +180,9 @@ export const VotePage = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '2rem',
-          background: '#ffffff',
         }}
       >
-        {/* Header Badges */}
+        {/* Header Badges & Multi-Voter Session Info */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
             {isClosed ? (
@@ -173,11 +198,11 @@ export const VotePage = () => {
             <span
               style={{
                 fontSize: '0.82rem',
-                color: '#1d4ed8',
+                color: '#f5c542',
                 fontFamily: 'var(--font-display)',
                 fontWeight: 700,
-                background: '#eff6ff',
-                border: '1px solid #bfdbfe',
+                background: 'rgba(245, 197, 66, 0.12)',
+                border: '1px solid rgba(245, 197, 66, 0.3)',
                 padding: '0.25rem 0.65rem',
                 borderRadius: '8px',
                 letterSpacing: '0.05em',
@@ -187,13 +212,33 @@ export const VotePage = () => {
             </span>
           </div>
 
-          <button
-            onClick={copyShareLink}
-            className="btn btn-secondary btn-sm"
-            title="Share this poll link"
-          >
-            <Share2 size={14} /> Share Link
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span
+              style={{
+                fontSize: '0.78rem',
+                color: '#94a3b8',
+                background: 'rgba(18, 32, 68, 0.6)',
+                padding: '0.25rem 0.65rem',
+                borderRadius: '6px',
+                border: '1px solid rgba(245, 197, 66, 0.15)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+              }}
+              title="Unique voter session fingerprint"
+            >
+              <Users size={12} color="#f5c542" />
+              Voter #{currentVoterToken.slice(-5)}
+            </span>
+
+            <button
+              onClick={copyShareLink}
+              className="btn btn-secondary btn-sm"
+              title="Share this poll link"
+            >
+              <Share2 size={14} /> Share Link
+            </button>
+          </div>
         </div>
 
         {/* Poll Question */}
@@ -205,14 +250,14 @@ export const VotePage = () => {
               fontFamily: 'var(--font-display)',
               lineHeight: 1.3,
               letterSpacing: '-0.02em',
-              color: 'var(--text-main)',
+              color: '#f8fafc',
             }}
           >
             {poll.question}
           </h1>
 
           {poll.expires_at && (
-            <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem', marginTop: '0.6rem' }}>
+            <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginTop: '0.6rem' }}>
               Closes on: {new Date(poll.expires_at).toLocaleString()}
             </p>
           )}
@@ -237,9 +282,9 @@ export const VotePage = () => {
                       width: '28px',
                       height: '28px',
                       borderRadius: '8px',
-                      background: isSelected ? 'var(--primary)' : '#f1f5f9',
-                      color: isSelected ? '#ffffff' : '#64748b',
-                      border: isSelected ? 'none' : '1px solid #e2e8f0',
+                      background: isSelected ? 'var(--primary)' : 'rgba(18, 32, 68, 0.7)',
+                      color: isSelected ? '#070d1e' : '#94a3b8',
+                      border: isSelected ? 'none' : '1px solid rgba(245, 197, 66, 0.2)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -251,7 +296,7 @@ export const VotePage = () => {
                     {letter}
                   </span>
 
-                  <span style={{ fontSize: '1.08rem', fontWeight: 600, color: 'var(--text-main)', flex: 1 }}>
+                  <span style={{ fontSize: '1.08rem', fontWeight: 600, color: '#f8fafc', flex: 1 }}>
                     {option.text}
                   </span>
 
@@ -283,7 +328,7 @@ export const VotePage = () => {
                 to={`/poll/${poll.id}/results`}
                 style={{
                   fontSize: '0.9rem',
-                  color: 'var(--text-dim)',
+                  color: '#94a3b8',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
@@ -300,15 +345,15 @@ export const VotePage = () => {
             <div
               style={{
                 background: hasVoted
-                  ? '#f0fdf4'
-                  : '#f8fafc',
-                border: `1px solid ${hasVoted ? '#a7f3d0' : 'var(--border-subtle)'}`,
+                  ? 'rgba(245, 197, 66, 0.12)'
+                  : 'rgba(10, 18, 38, 0.7)',
+                border: `1px solid ${hasVoted ? 'rgba(245, 197, 66, 0.35)' : 'var(--border-subtle)'}`,
                 borderRadius: 'var(--radius-md)',
                 padding: '1.2rem 1.5rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '1rem',
-                boxShadow: hasVoted ? '0 4px 16px rgba(5, 150, 105, 0.1)' : 'none',
+                boxShadow: hasVoted ? '0 4px 20px rgba(245, 197, 66, 0.15)' : 'none',
               }}
             >
               <div
@@ -316,21 +361,21 @@ export const VotePage = () => {
                   width: '42px',
                   height: '42px',
                   borderRadius: '50%',
-                  background: hasVoted ? '#ecfdf5' : '#f1f5f9',
-                  border: hasVoted ? '1px solid #a7f3d0' : '1px solid #e2e8f0',
+                  background: hasVoted ? 'rgba(245, 197, 66, 0.2)' : 'rgba(18, 32, 68, 0.7)',
+                  border: hasVoted ? '1px solid #f5c542' : '1px solid rgba(245, 197, 66, 0.2)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}
               >
-                <CheckCircle2 size={24} color={hasVoted ? '#059669' : 'var(--text-muted)'} />
+                <CheckCircle2 size={24} color={hasVoted ? '#f5c542' : 'var(--text-muted)'} />
               </div>
               <div>
-                <p style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1.05rem' }}>
+                <p style={{ fontWeight: 700, color: '#f8fafc', fontSize: '1.05rem' }}>
                   {hasVoted ? 'Your vote is recorded!' : 'This poll is closed.'}
                 </p>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem', marginTop: '0.15rem' }}>
+                <p style={{ color: '#94a3b8', fontSize: '0.86rem', marginTop: '0.15rem' }}>
                   Live vote counts below sync automatically in real-time.
                 </p>
               </div>
@@ -344,11 +389,28 @@ export const VotePage = () => {
               />
             )}
 
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+            {/* Multi-person action buttons */}
+            <div style={{ display: 'flex', gap: '0.85rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+              {!isClosed && (
+                <button
+                  onClick={handleVoteAgain}
+                  className="btn btn-secondary"
+                  style={{
+                    flex: 1,
+                    minWidth: '220px',
+                    padding: '0.95rem',
+                    color: '#f5c542',
+                    borderColor: 'rgba(245, 197, 66, 0.4)',
+                  }}
+                >
+                  <UserPlus size={18} /> Cast Another Vote (New Person)
+                </button>
+              )}
+
               <Link
                 to={`/poll/${poll.id}/results`}
                 className="btn btn-primary"
-                style={{ flex: 1, padding: '0.9rem' }}
+                style={{ flex: 1, minWidth: '220px', padding: '0.95rem' }}
               >
                 <BarChart3 size={18} /> Open Full Live Results Board
               </Link>

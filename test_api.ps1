@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$baseUrl = "http://172.17.27.76:8080"
+$baseUrl = if ($env:API_URL) { $env:API_URL } else { "http://localhost:8080" }
 
 Write-Host "=== 1. Testing Signup ==="
 $rand = Get-Random -Minimum 1000 -Maximum 9999

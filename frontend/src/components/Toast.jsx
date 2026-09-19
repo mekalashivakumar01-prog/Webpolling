@@ -35,16 +35,16 @@ export const ToastContainer = () => {
     <div className="toast-container">
       {toasts.map((toast) => (
         <div key={toast.id} className="toast">
-          {toast.type === 'success' && <CheckCircle2 size={18} color="#059669" />}
-          {toast.type === 'error' && <AlertCircle size={18} color="#e11d48" />}
-          {toast.type === 'info' && <Info size={18} color="#2563eb" />}
-          <span style={{ flex: 1 }}>{toast.message}</span>
+          {toast.type === 'success' && <CheckCircle2 size={18} color="#f5c542" />}
+          {toast.type === 'error' && <AlertCircle size={18} color="#fb7185" />}
+          {toast.type === 'info' && <Info size={18} color="#f5c542" />}
+          <span style={{ flex: 1, color: '#f8fafc' }}>{toast.message}</span>
           <button
             onClick={() => removeToast(toast.id)}
             style={{
               background: 'transparent',
               border: 'none',
-              color: 'var(--text-dim)',
+              color: '#94a3b8',
               cursor: 'pointer',
               padding: '2px',
               display: 'flex',

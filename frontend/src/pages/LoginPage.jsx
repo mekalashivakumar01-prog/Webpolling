@@ -47,14 +47,14 @@ export const LoginPage = () => {
         position: 'relative',
       }}
     >
-      {/* Background ambient glow element */}
+      {/* Background ambient gold & sapphire glow */}
       <div
         style={{
           position: 'absolute',
-          width: '320px',
-          height: '320px',
+          width: '360px',
+          height: '360px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(245, 197, 66, 0.16) 0%, rgba(30, 58, 138, 0.25) 50%, transparent 70%)',
           filter: 'blur(50px)',
           zIndex: 0,
           pointerEvents: 'none',
@@ -72,7 +72,6 @@ export const LoginPage = () => {
           gap: '1.75rem',
           position: 'relative',
           zIndex: 1,
-          background: '#ffffff',
         }}
       >
         <div style={{ textAlign: 'center' }}>
@@ -81,15 +80,15 @@ export const LoginPage = () => {
               width: '54px',
               height: '54px',
               borderRadius: '16px',
-              background: 'linear-gradient(135deg, #2563eb 0%, #0284c7 50%, #0d9488 100%)',
+              background: 'linear-gradient(135deg, #f5c542 0%, #e5a93b 50%, #b47b18 100%)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '1rem',
-              boxShadow: '0 8px 25px rgba(37, 99, 235, 0.25)',
+              boxShadow: '0 8px 25px rgba(245, 197, 66, 0.35)',
             }}
           >
-            <LogIn size={26} color="#fff" />
+            <LogIn size={26} color="#070d1e" />
           </div>
 
           <h2
@@ -98,13 +97,13 @@ export const LoginPage = () => {
               fontWeight: 800,
               fontFamily: 'var(--font-display)',
               letterSpacing: '-0.02em',
+              color: '#f8fafc',
             }}
           >
-            <span className="gradient-heading">Welcome</span>{' '}
-            <span className="gradient-accent-heading">Back</span>
+            Welcome <span style={{ color: '#f5c542' }}>Back</span>
           </h2>
 
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', marginTop: '0.35rem' }}>
+          <p style={{ color: '#94a3b8', fontSize: '0.94rem', marginTop: '0.35rem' }}>
             Sign in to manage and launch real-time live polls
           </p>
         </div>
@@ -112,11 +111,11 @@ export const LoginPage = () => {
         {error && (
           <div
             style={{
-              background: '#fff1f2',
-              border: '1px solid #fecdd3',
+              background: 'rgba(244, 63, 94, 0.15)',
+              border: '1px solid rgba(244, 63, 94, 0.35)',
               borderRadius: 'var(--radius-sm)',
               padding: '0.85rem 1rem',
-              color: '#e11d48',
+              color: '#fb7185',
               fontSize: '0.9rem',
               display: 'flex',
               alignItems: 'center',
@@ -143,7 +142,7 @@ export const LoginPage = () => {
               />
               <Mail
                 size={18}
-                color="var(--text-dim)"
+                color="#94a3b8"
                 style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }}
               />
             </div>
@@ -163,7 +162,7 @@ export const LoginPage = () => {
               />
               <Lock
                 size={18}
-                color="var(--text-dim)"
+                color="#94a3b8"
                 style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }}
               />
             </div>
@@ -185,11 +184,11 @@ export const LoginPage = () => {
             type="button"
             onClick={handleDemoFill}
             style={{
-              background: '#eff6ff',
-              border: '1px solid #bfdbfe',
+              background: 'rgba(245, 197, 66, 0.12)',
+              border: '1px solid rgba(245, 197, 66, 0.3)',
               borderRadius: 'var(--radius-sm)',
               padding: '0.6rem 1rem',
-              color: '#1d4ed8',
+              color: '#f5c542',
               fontSize: '0.88rem',
               fontWeight: 600,
               cursor: 'pointer',
@@ -200,12 +199,12 @@ export const LoginPage = () => {
               transition: 'all 0.2s ease',
             }}
           >
-            <Sparkles size={15} color="#2563eb" /> Click to Auto-fill Demo Credentials
+            <Sparkles size={15} color="#f5c542" /> Click to Auto-fill Demo Credentials
           </button>
 
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>
+          <p style={{ color: '#94a3b8', fontSize: '0.92rem' }}>
             Don't have an account?{' '}
-            <Link to="/signup" style={{ color: '#2563eb', fontWeight: 700 }}>
+            <Link to="/signup" style={{ color: '#f5c542', fontWeight: 700 }}>
               Sign Up
             </Link>
           </p>

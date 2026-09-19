@@ -5,18 +5,14 @@ import { LiveResultsChart } from '../components/LiveResultsChart';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import {
-  Radio,
   Wifi,
   WifiOff,
-  Share2,
   Copy,
   Check,
   Lock,
   Vote,
   ArrowLeft,
   Users,
-  Sparkles,
-  Zap,
 } from 'lucide-react';
 import { showToast } from '../components/Toast';
 
@@ -65,7 +61,7 @@ export const ResultsPage = () => {
         }}
       >
         <div className="pulse-dot" style={{ color: 'var(--primary)', width: '16px', height: '16px' }} />
-        <span style={{ fontSize: '1.1rem', fontWeight: 600 }}>Connecting to live WebSocket stream...</span>
+        <span style={{ fontSize: '1.1rem', fontWeight: 600, color: '#f8fafc' }}>Connecting to live WebSocket stream...</span>
       </div>
     );
   }
@@ -74,7 +70,7 @@ export const ResultsPage = () => {
     return (
       <div style={{ maxWidth: '520px', margin: '4rem auto', textAlign: 'center' }}>
         <div className="glass-card" style={{ padding: '3.5rem 2rem' }}>
-          <h2 style={{ fontSize: '1.65rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>
+          <h2 style={{ fontSize: '1.65rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#f8fafc' }}>
             Unable to Load Results
           </h2>
           <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', fontSize: '0.98rem' }}>
@@ -104,19 +100,7 @@ export const ResultsPage = () => {
       >
         <Link
           to="/dashboard"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.55rem',
-            color: 'var(--text-muted)',
-            fontSize: '0.92rem',
-            fontWeight: 600,
-            background: '#ffffff',
-            padding: '0.45rem 0.95rem',
-            borderRadius: 'var(--radius-sm)',
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
-          }}
+          className="btn btn-secondary btn-sm"
         >
           <ArrowLeft size={16} /> Dashboard
         </Link>
@@ -125,13 +109,10 @@ export const ResultsPage = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           {connectionStatus === 'connected' ? (
             <span
-              className="pill-badge"
+              className="pill-badge pill-live"
               style={{
-                background: '#ecfdf5',
-                color: '#059669',
-                border: '1px solid #a7f3d0',
+                boxShadow: '0 2px 14px rgba(245, 197, 66, 0.25)',
                 padding: '0.35rem 0.95rem',
-                boxShadow: '0 2px 10px rgba(5, 150, 105, 0.15)',
               }}
             >
               <span className="pulse-dot" /> LIVE SYNC ACTIVE
@@ -140,9 +121,9 @@ export const ResultsPage = () => {
             <span
               className="pill-badge"
               style={{
-                background: '#fffbeb',
-                color: '#d97706',
-                border: '1px solid #fde68a',
+                background: 'rgba(245, 197, 66, 0.1)',
+                color: '#f5c542',
+                border: '1px solid rgba(245, 197, 66, 0.3)',
                 padding: '0.35rem 0.95rem',
               }}
             >
@@ -152,9 +133,9 @@ export const ResultsPage = () => {
             <span
               className="pill-badge"
               style={{
-                background: '#fff1f2',
-                color: '#e11d48',
-                border: '1px solid #fecdd3',
+                background: 'rgba(244, 63, 94, 0.15)',
+                color: '#fb7185',
+                border: '1px solid rgba(244, 63, 94, 0.35)',
                 padding: '0.35rem 0.95rem',
               }}
             >
@@ -182,7 +163,6 @@ export const ResultsPage = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '2.25rem',
-          background: '#ffffff',
         }}
       >
         {/* Header Question and Metrics */}
@@ -194,18 +174,18 @@ export const ResultsPage = () => {
                 fontWeight: 800,
                 fontSize: '0.85rem',
                 letterSpacing: '0.08em',
-                background: '#eff6ff',
-                color: '#1d4ed8',
+                background: 'rgba(245, 197, 66, 0.12)',
+                color: '#f5c542',
                 padding: '0.25rem 0.75rem',
                 borderRadius: '8px',
-                border: '1px solid #bfdbfe',
+                border: '1px solid rgba(245, 197, 66, 0.3)',
               }}
             >
               SHARE CODE: #{pollData.share_code}
             </span>
 
             {pollData.expires_at && (
-              <span style={{ fontSize: '0.84rem', color: 'var(--text-dim)' }}>
+              <span style={{ fontSize: '0.84rem', color: '#94a3b8' }}>
                 Expires: {new Date(pollData.expires_at).toLocaleString()}
               </span>
             )}
@@ -218,7 +198,7 @@ export const ResultsPage = () => {
               fontFamily: 'var(--font-display)',
               lineHeight: 1.28,
               letterSpacing: '-0.025em',
-              color: 'var(--text-main)',
+              color: '#f8fafc',
             }}
           >
             {pollData.question}
@@ -230,22 +210,22 @@ export const ResultsPage = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                background: '#f8fafc',
+                background: 'rgba(10, 18, 38, 0.75)',
                 padding: '0.35rem 0.85rem',
                 borderRadius: 'var(--radius-full)',
-                border: '1px solid #e2e8f0',
+                border: '1px solid rgba(245, 197, 66, 0.2)',
               }}
             >
-              <Users size={17} color="var(--primary)" />
-              <strong style={{ color: 'var(--text-main)', fontSize: '1.08rem' }}>
+              <Users size={17} color="#f5c542" />
+              <strong style={{ color: '#f8fafc', fontSize: '1.08rem' }}>
                 {pollData.total_votes}
               </strong>{' '}
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+              <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>
                 {pollData.total_votes === 1 ? 'total vote' : 'total votes cast'}
               </span>
             </div>
 
-            <span style={{ color: 'var(--text-dim)', fontSize: '0.88rem' }}>
+            <span style={{ color: '#f5c542', fontSize: '0.88rem' }}>
               ⚡ Redis Pub/Sub live pipeline
             </span>
           </div>
@@ -264,7 +244,7 @@ export const ResultsPage = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingTop: '1.75rem',
-            borderTop: '1px solid var(--border-subtle)',
+            borderTop: '1px solid rgba(245, 197, 66, 0.18)',
             flexWrap: 'wrap',
             gap: '1.25rem',
           }}
@@ -274,8 +254,8 @@ export const ResultsPage = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'var(--bg-input)',
-              border: '1px solid var(--border-card)',
+              background: 'rgba(7, 13, 30, 0.85)',
+              border: '1px solid rgba(245, 197, 66, 0.25)',
               borderRadius: 'var(--radius-md)',
               padding: '0.45rem 0.55rem 0.45rem 1.15rem',
               gap: '0.85rem',
@@ -286,7 +266,7 @@ export const ResultsPage = () => {
             <span
               style={{
                 fontSize: '0.88rem',
-                color: 'var(--text-muted)',
+                color: '#f8fafc',
                 fontFamily: 'monospace',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -323,7 +303,7 @@ export const ResultsPage = () => {
                 onClick={handleClosePoll}
                 disabled={closing}
                 className="btn btn-secondary btn-sm"
-                style={{ color: 'var(--accent-amber)' }}
+                style={{ color: '#f5c542' }}
               >
                 <Lock size={14} /> Close Poll
               </button>

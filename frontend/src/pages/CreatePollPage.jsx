@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
-import { Plus, Trash2, Clock, Sparkles, AlertCircle, ArrowRight, Share2, Check, HelpCircle } from 'lucide-react';
+import { Plus, Trash2, Clock, Sparkles, AlertCircle, ArrowRight, Share2, Check } from 'lucide-react';
 import { showToast } from '../components/Toast';
 
 export const CreatePollPage = () => {
@@ -104,19 +104,19 @@ export const CreatePollPage = () => {
             fontFamily: 'var(--font-display)',
             letterSpacing: '-0.025em',
             lineHeight: 1.2,
+            color: '#f8fafc',
           }}
         >
-          <span className="gradient-heading">Create a New</span>{' '}
-          <span className="gradient-accent-heading">Live Poll</span>
+          Create a New <span style={{ color: '#f5c542' }}>Live Poll</span>
         </h1>
 
-        <p style={{ color: 'var(--text-muted)', marginTop: '0.4rem', fontSize: '1.02rem' }}>
+        <p style={{ color: '#94a3b8', marginTop: '0.4rem', fontSize: '1.02rem' }}>
           Craft your question, customize audience choices, and obtain a real-time shareable link.
         </p>
 
         {/* Quick idea chips */}
         <div style={{ display: 'flex', gap: '0.65rem', marginTop: '1.25rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.86rem', color: 'var(--text-dim)', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.86rem', color: '#94a3b8', fontWeight: 600 }}>
             Instant Templates:
           </span>
           <button
@@ -124,14 +124,14 @@ export const CreatePollPage = () => {
             onClick={() => handlePresetFill('dev')}
             className="btn btn-secondary btn-sm"
           >
-            <Sparkles size={14} color="var(--primary)" /> Tech Stack Poll
+            <Sparkles size={14} color="#f5c542" /> Tech Stack Poll
           </button>
           <button
             type="button"
             onClick={() => handlePresetFill('team')}
             className="btn btn-secondary btn-sm"
           >
-            <Sparkles size={14} color="#059669" /> Meeting Scheduling
+            <Sparkles size={14} color="#f5c542" /> Meeting Scheduling
           </button>
         </div>
       </div>
@@ -141,17 +141,16 @@ export const CreatePollPage = () => {
         className="glass-card"
         style={{
           padding: '2.5rem 2.25rem',
-          background: '#ffffff',
         }}
       >
         {error && (
           <div
             style={{
-              background: '#fff1f2',
-              border: '1px solid #fecdd3',
+              background: 'rgba(244, 63, 94, 0.15)',
+              border: '1px solid rgba(244, 63, 94, 0.35)',
               borderRadius: 'var(--radius-sm)',
               padding: '0.85rem 1.15rem',
-              color: '#e11d48',
+              color: '#fb7185',
               fontSize: '0.92rem',
               display: 'flex',
               alignItems: 'center',
@@ -167,7 +166,7 @@ export const CreatePollPage = () => {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Question Input */}
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label" style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>
+            <label className="form-label" style={{ fontSize: '0.95rem', fontWeight: 700, color: '#f8fafc' }}>
               Poll Question
             </label>
             <input
@@ -185,10 +184,10 @@ export const CreatePollPage = () => {
           {/* Voting Options */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <label className="form-label" style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
+              <label className="form-label" style={{ fontSize: '0.95rem', fontWeight: 700, color: '#f8fafc', margin: 0 }}>
                 Voting Options (2–10)
               </label>
-              <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.82rem', color: '#94a3b8', fontWeight: 600 }}>
                 {options.length} of 10 choices configured
               </span>
             </div>
@@ -200,9 +199,9 @@ export const CreatePollPage = () => {
                     width: '32px',
                     height: '32px',
                     borderRadius: '8px',
-                    background: '#eff6ff',
-                    color: '#2563eb',
-                    border: '1px solid #bfdbfe',
+                    background: 'rgba(245, 197, 66, 0.12)',
+                    color: '#f5c542',
+                    border: '1px solid rgba(245, 197, 66, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -229,7 +228,7 @@ export const CreatePollPage = () => {
                     onClick={() => handleRemoveOption(index)}
                     className="btn btn-secondary btn-sm"
                     title="Remove choice"
-                    style={{ padding: '0.8rem', color: '#e11d48' }}
+                    style={{ padding: '0.8rem', color: '#fb7185' }}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -246,8 +245,8 @@ export const CreatePollPage = () => {
                   alignSelf: 'flex-start',
                   marginTop: '0.5rem',
                   borderStyle: 'dashed',
-                  borderColor: '#bfdbfe',
-                  color: '#2563eb',
+                  borderColor: 'rgba(245, 197, 66, 0.4)',
+                  color: '#f5c542',
                 }}
               >
                 <Plus size={16} /> Add Choice
@@ -258,7 +257,7 @@ export const CreatePollPage = () => {
           {/* Expiration Settings */}
           <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
-              <Clock size={16} color="var(--primary)" />
+              <Clock size={16} color="#f5c542" />
               Poll Duration & Expiration
             </label>
             <select
@@ -302,9 +301,9 @@ export const CreatePollPage = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '1.6rem',
-              background: '#ffffff',
-              boxShadow: '0 20px 45px -10px rgba(15, 23, 42, 0.18)',
-              border: '1px solid #e2e8f0',
+              background: 'rgba(10, 18, 38, 0.96)',
+              boxShadow: '0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(245, 197, 66, 0.2)',
+              border: '1px solid rgba(245, 197, 66, 0.35)',
             }}
           >
             <div
@@ -312,24 +311,24 @@ export const CreatePollPage = () => {
                 width: '64px',
                 height: '64px',
                 borderRadius: '20px',
-                background: '#ecfdf5',
-                color: '#059669',
+                background: 'rgba(245, 197, 66, 0.15)',
+                color: '#f5c542',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto',
-                border: '1px solid #a7f3d0',
-                boxShadow: '0 4px 16px rgba(5, 150, 105, 0.15)',
+                border: '1px solid rgba(245, 197, 66, 0.35)',
+                boxShadow: '0 4px 20px rgba(245, 197, 66, 0.25)',
               }}
             >
               <Share2 size={32} />
             </div>
 
             <div>
-              <h2 style={{ fontSize: '1.85rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>
-                Poll is Live!
+              <h2 style={{ fontSize: '1.85rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#f8fafc' }}>
+                Poll is <span style={{ color: '#f5c542' }}>Live!</span>
               </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.96rem', marginTop: '0.35rem' }}>
+              <p style={{ color: '#94a3b8', fontSize: '0.96rem', marginTop: '0.35rem' }}>
                 Share this unique link with your audience. Results update on your dashboard in real-time.
               </p>
             </div>
@@ -339,8 +338,8 @@ export const CreatePollPage = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                background: 'var(--bg-input)',
-                border: '1px solid var(--border-hover)',
+                background: 'rgba(7, 13, 30, 0.85)',
+                border: '1px solid rgba(245, 197, 66, 0.3)',
                 borderRadius: 'var(--radius-md)',
                 padding: '0.5rem 0.5rem 0.5rem 1.15rem',
                 gap: '0.85rem',
@@ -349,7 +348,7 @@ export const CreatePollPage = () => {
               <span
                 style={{
                   fontSize: '0.92rem',
-                  color: 'var(--text-main)',
+                  color: '#f8fafc',
                   fontFamily: 'monospace',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',

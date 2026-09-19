@@ -54,7 +54,7 @@ export const DashboardPage = () => {
         }}
       >
         <div className="pulse-dot" style={{ color: 'var(--primary)', width: '16px', height: '16px' }} />
-        <span style={{ fontSize: '1.05rem', fontWeight: 600 }}>Loading your live polls...</span>
+        <span style={{ fontSize: '1.05rem', fontWeight: 600, color: '#f8fafc' }}>Loading your live polls...</span>
       </div>
     );
   }
@@ -76,9 +76,9 @@ export const DashboardPage = () => {
             <span
               className="pill-badge"
               style={{
-                background: '#eff6ff',
-                color: '#2563eb',
-                border: '1px solid #bfdbfe',
+                background: 'rgba(245, 197, 66, 0.15)',
+                color: '#f5c542',
+                border: '1px solid rgba(245, 197, 66, 0.35)',
                 padding: '0.2rem 0.65rem',
               }}
             >
@@ -93,13 +93,13 @@ export const DashboardPage = () => {
               fontFamily: 'var(--font-display)',
               letterSpacing: '-0.03em',
               lineHeight: 1.2,
-              color: '#0f172a',
+              color: '#f8fafc',
             }}
           >
-            Live Poll <span style={{ color: '#2563eb' }}>Dashboard</span>
+            Live Poll <span style={{ color: '#f5c542' }}>Dashboard</span>
           </h1>
 
-          <p style={{ color: '#64748b', marginTop: '0.4rem', fontSize: '1.02rem', maxWidth: '620px' }}>
+          <p style={{ color: '#94a3b8', marginTop: '0.4rem', fontSize: '1.02rem', maxWidth: '620px' }}>
             Launch polls, distribute share links, and watch audience votes stream in real-time powered by Redis Pub/Sub.
           </p>
         </div>
@@ -128,7 +128,7 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Metrics Row with Clean Light Discs */}
+      {/* Metrics Row with Dark Blue & Gold Cards */}
       <div
         style={{
           display: 'grid',
@@ -141,18 +141,18 @@ export const DashboardPage = () => {
           <div
             className="stat-icon-wrapper"
             style={{
-              background: '#eff6ff',
-              border: '1px solid #bfdbfe',
-              color: '#2563eb',
+              background: 'rgba(245, 197, 66, 0.12)',
+              border: '1px solid rgba(245, 197, 66, 0.25)',
+              color: '#f5c542',
             }}
           >
             <Layers size={24} />
           </div>
           <div>
-            <span style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Total Created
             </span>
-            <p style={{ fontSize: '2.2rem', fontWeight: 800, fontFamily: 'var(--font-display)', lineHeight: 1.15, marginTop: '0.2rem', color: '#0f172a' }}>
+            <p style={{ fontSize: '2.2rem', fontWeight: 800, fontFamily: 'var(--font-display)', lineHeight: 1.15, marginTop: '0.2rem', color: '#f8fafc' }}>
               {totalPolls}
             </p>
           </div>
@@ -163,18 +163,18 @@ export const DashboardPage = () => {
           <div
             className="stat-icon-wrapper"
             style={{
-              background: '#ecfdf5',
-              border: '1px solid #a7f3d0',
-              color: '#059669',
+              background: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              color: '#34d399',
             }}
           >
             <Radio size={24} />
           </div>
           <div>
-            <span style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Active Polls
             </span>
-            <p style={{ fontSize: '2.2rem', fontWeight: 800, fontFamily: 'var(--font-display)', lineHeight: 1.15, marginTop: '0.2rem', color: '#059669' }}>
+            <p style={{ fontSize: '2.2rem', fontWeight: 800, fontFamily: 'var(--font-display)', lineHeight: 1.15, marginTop: '0.2rem', color: '#34d399' }}>
               {activePolls}
             </p>
           </div>
@@ -185,18 +185,18 @@ export const DashboardPage = () => {
           <div
             className="stat-icon-wrapper"
             style={{
-              background: '#f0f9ff',
-              border: '1px solid #bae6fd',
-              color: '#0284c7',
+              background: 'rgba(59, 130, 246, 0.15)',
+              border: '1px solid rgba(59, 130, 246, 0.35)',
+              color: '#93c5fd',
             }}
           >
             <Vote size={24} />
           </div>
           <div>
-            <span style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Total Votes Received
             </span>
-            <p style={{ fontSize: '2.2rem', fontWeight: 800, fontFamily: 'var(--font-display)', lineHeight: 1.15, marginTop: '0.2rem', color: '#0284c7' }}>
+            <p style={{ fontSize: '2.2rem', fontWeight: 800, fontFamily: 'var(--font-display)', lineHeight: 1.15, marginTop: '0.2rem', color: '#93c5fd' }}>
               {totalVotesCast}
             </p>
           </div>
@@ -214,7 +214,6 @@ export const DashboardPage = () => {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '1.5rem',
-            background: '#ffffff',
           }}
         >
           <div
@@ -222,22 +221,22 @@ export const DashboardPage = () => {
               width: '72px',
               height: '72px',
               borderRadius: '24px',
-              background: '#eff6ff',
-              border: '1px solid #bfdbfe',
+              background: 'rgba(245, 197, 66, 0.12)',
+              border: '1px solid rgba(245, 197, 66, 0.3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#2563eb',
+              color: '#f5c542',
             }}
           >
             <BarChart3 size={36} />
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#0f172a' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#f8fafc' }}>
               No Polls Created Yet
             </h3>
-            <p style={{ color: '#64748b', maxWidth: '440px', margin: '0.5rem auto 0', fontSize: '0.98rem' }}>
+            <p style={{ color: '#94a3b8', maxWidth: '440px', margin: '0.5rem auto 0', fontSize: '0.98rem' }}>
               Launch your first live poll in seconds. Share the link with your audience and watch live updates with zero page refreshes.
             </p>
           </div>
